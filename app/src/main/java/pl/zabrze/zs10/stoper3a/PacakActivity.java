@@ -3,13 +3,18 @@ package pl.zabrze.zs10.stoper3a;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class PacakActivity extends AppCompatActivity {
     ArrayList<ImageView> listaWidokowJablka = new ArrayList<>();
+    CountDownTimer countDownTimer;
+    TextView textViewCzas;
+    int czas = 1000*10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +30,7 @@ public class PacakActivity extends AppCompatActivity {
         listaWidokowJablka.add(findViewById(R.id.imageView9));
         ukryjJablka();
         pokazLosoweJablko();
+        odliczanieCzasu();
     }
     private void pokazLosoweJablko(){
         int losowa =(int) (Math.random()*9);
@@ -34,10 +40,30 @@ public class PacakActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         view.setVisibility(View.INVISIBLE);
-                        pokazLosoweJablko();
+
+                        countDownTimer.cancel();
+                        odliczanieCzasu();
                     }
                 }
         );
+    }
+
+    private void odliczanieCzasu(){
+        countDownTimer = new CountDownTimer(czas,1000) {
+            @Override
+            public void onTick(long l) {
+                ukryjJablka();
+                pokazLosoweJablko();
+                czas = (int)l;
+
+            }
+
+            @Override
+            public void onFinish() {
+ukryjJablka();
+            }
+        };
+        countDownTimer.start();
     }
 
     private void ukryjJablka(){
