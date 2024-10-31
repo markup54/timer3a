@@ -19,6 +19,7 @@ public class Gracz {
 
     public void stopTimer(){
         czyDziala = false;
+        countDownTimer.cancel();
     }
 
     public void startTimer(){
@@ -27,7 +28,9 @@ public class Gracz {
             @Override
             public void onTick(long l) {
                 pozostaleSekundy = (int)l/1000;
-                buttonGracza.setText(String.valueOf(pozostaleSekundy));
+                int sekundy = pozostaleSekundy%60;
+                int minuty = pozostaleSekundy/60;
+                buttonGracza.setText(String.format("%d:%02d",minuty,sekundy));
                 //TODO: poprawić wyświetlanie
             }
 
@@ -36,6 +39,7 @@ public class Gracz {
                 buttonGracza.setText("KONIEC");
             }
         };
+        countDownTimer.start();
     }
 
 }
